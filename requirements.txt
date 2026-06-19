@@ -9,6 +9,9 @@ scikit-learn>=1.3
 shap>=0.44
 matplotlib>=3.7
 
+# Dashboard
+streamlit>=1.30
+
 # LLM agents
 anthropic>=0.40
 

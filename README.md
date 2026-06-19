@@ -86,9 +86,20 @@ cp .env.example .env          # then set ANTHROPIC_API_KEY for the LLM agents
 python scripts/init_db.py     # create the database schema
 ```
 
+## Dashboard
+
+A Streamlit dashboard visualizes the risk posture — headline metrics, the ranked
+high-risk sites with their SHAP drivers, and the patient-dropout outlook. It runs
+without an API key (deterministic analysis); with a key configured, the LLM
+agents can be triggered from the UI.
+
+```bash
+streamlit run trialmind/dashboard.py
+```
+
 ## Tech
 
-Python · SQLAlchemy · pandas · scikit-learn · SHAP · Anthropic Claude Opus 4.8
+Python · SQLAlchemy · pandas · scikit-learn · SHAP · Streamlit · Anthropic Claude Opus 4.8
 
 ## Models & results
 
@@ -114,6 +125,7 @@ circular definitions.
 
 ## Status
 
-Working: synthetic data generation, feature engineering, and both predictive
-models with full evaluation + SHAP. Next: LLM explanation/recommendation/summary
-agents (Claude Opus 4.8) and a Streamlit dashboard. See commit history for progress.
+End-to-end working: synthetic data generation → feature engineering → site-risk
+and patient-dropout models (evaluation + SHAP) → three Claude Opus 4.8 agents
+(explainability / recommendation / executive summary) → Streamlit dashboard.
+The LLM agents require an Anthropic API key; everything else runs without one.
