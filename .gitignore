@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtualenv
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+
+# Local database + generated artifacts
+data/*.db
+data/*.sqlite
+data/*.csv
+data/*.parquet
+data/artifacts/
+
+# Tooling
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.DS_Store
