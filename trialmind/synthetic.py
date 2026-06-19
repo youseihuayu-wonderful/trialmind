@@ -73,6 +73,7 @@ def _generate_site(rng: np.random.Generator, site_id: int, cfg: GenerationConfig
         staff_count=staff,
         activation_date=activation,
         enrollment_target=enrollment_target,
+        latent_quality=round(site_quality, 4),
     )
     return site, site_quality
 

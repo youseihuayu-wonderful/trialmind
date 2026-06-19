@@ -32,6 +32,7 @@ def test_site_patient_visit_roundtrip():
         staff_count=6,
         activation_date=date(2026, 1, 15),
         enrollment_target=100,
+        latent_quality=0.5,
     )
     patient = Patient(
         patient_id=1,
@@ -74,6 +75,7 @@ def test_site_features_relationship():
         staff_count=4,
         activation_date=date(2026, 1, 20),
         enrollment_target=90,
+        latent_quality=-0.8,
     )
     features = SiteFeatures(
         site_id=2,

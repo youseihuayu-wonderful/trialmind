@@ -33,6 +33,10 @@ class Site(Base):
     staff_count: Mapped[int] = mapped_column(Integer)
     activation_date: Mapped[date] = mapped_column(Date)
     enrollment_target: Mapped[int] = mapped_column(Integer)
+    # Hidden ground-truth site quality that drives the observable signals and the
+    # high_risk label. NOT a model feature — used only for label generation so the
+    # site-risk model has a non-leaky target to recover from noisy observables.
+    latent_quality: Mapped[float] = mapped_column(Float)
 
     patients: Mapped[List["Patient"]] = relationship(
         back_populates="site", cascade="all, delete-orphan"
