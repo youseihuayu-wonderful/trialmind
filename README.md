@@ -90,12 +90,30 @@ python scripts/init_db.py     # create the database schema
 
 Python · SQLAlchemy · pandas · scikit-learn · SHAP · Anthropic Claude Opus 4.8
 
-## Evaluation
+## Models & results
 
-Models are evaluated with ROC-AUC, PR-AUC, confusion matrices, threshold review,
-feature importance, and segment-level error analysis. Outputs are structured for
-dashboarding and stakeholder reporting (MLflow/Docker-style deployment patterns planned).
+Two scikit-learn classifiers, each evaluated with ROC-AUC, PR-AUC, confusion
+matrix, precision/recall/F1, and SHAP feature attributions (shared code in
+`trialmind/models/evaluation.py`). Plots and `metrics.json` are written to
+`data/artifacts/` for dashboarding.
+
+| Model | Unit | ROC-AUC | PR-AUC | Validation |
+|-------|------|--------:|-------:|------------|
+| Site risk (`trialmind/models/site_risk.py`) | site | **0.93** | 0.88 | stratified 5-fold CV (150 sites) |
+| Patient dropout (`trialmind/models/dropout.py`) | patient | **0.75** | 0.47 | held-out test split (~3k patients) |
+
+```bash
+python scripts/train_site_risk.py   # trains + evaluates the site-risk model
+python scripts/train_dropout.py     # trains + evaluates the dropout model
+```
+
+Leakage is controlled deliberately: the site label comes from a hidden
+`latent_quality` factor the model never sees, and the dropout model uses only
+enrollment-time patient features — so the metrics reflect genuine signal, not
+circular definitions.
 
 ## Status
 
-Early scaffolding. See commit history for progress.
+Working: synthetic data generation, feature engineering, and both predictive
+models with full evaluation + SHAP. Next: LLM explanation/recommendation/summary
+agents (Claude Opus 4.8) and a Streamlit dashboard. See commit history for progress.
