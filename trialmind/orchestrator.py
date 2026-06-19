@@ -37,13 +37,30 @@ class Pipeline:
         return len(self.agents)
 
 
-def build_default_pipeline() -> Pipeline:
+def build_default_pipeline(top_k: int = 4) -> Pipeline:
     """Construct the full TrialMind pipeline.
 
-    Stages are added here as they are implemented:
-      data-quality -> feature-engineering -> site-risk -> dropout
-      -> explainability -> recommendation -> exec-summary
+    Deterministic analysis (data -> features -> models -> SHAP) runs first, then
+    the three Claude agents reason over its structured output:
+
+      analysis -> explainability -> recommendation -> exec-summary
+
+    The explainability/recommendation/exec-summary stages require an Anthropic
+    API key (see trialmind.config). A human-review gate sits conceptually between
+    recommendation and any downstream action.
     """
-    pipeline = Pipeline()
-    # Stages are wired in as each agent is implemented (see project roadmap).
-    return pipeline
+    from trialmind.agents import (
+        AnalysisAgent,
+        ExecSummaryAgent,
+        ExplainabilityAgent,
+        RecommendationAgent,
+    )
+
+    return Pipeline(
+        [
+            AnalysisAgent(top_k=top_k),
+            ExplainabilityAgent(),
+            RecommendationAgent(),
+            ExecSummaryAgent(),
+        ]
+    )
